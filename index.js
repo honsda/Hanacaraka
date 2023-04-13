@@ -6,46 +6,43 @@ const readline = require('readline').createInterface({
 });
 
 function transl(input) {
-    var str = input;
+    var str = ` ${input}`;
     var output = "";
-    var iterated = "";
 
     const vowel = new RegExp(`[aeiou]`,'gi');
     
     for (let index = 0; index < input.length; index++) {
         const char = input[index];
-        const lastletter = iterated[index-1];
-        let lastcon = !(vowel.test(lastletter));
-        console.log(`>> ${iterated}`);
-        iterated += char;
+        const lastletter = input[index-1];
+        const nextletter = input[index+1];
+        const lastvow = (lastletter && (/[aeiou]/gi.test(lastletter)));
+        const lastcon = (lastletter && !(/[aeiou]/gi.test(lastletter)));
+        const nextvow = (nextletter && (/[aeiou]/gi.test(nextletter)));
+        const nextcon = (nextletter && !(/[aeiou]/gi.test(nextletter)));
 
-        if (/[aeiou]/gi.test(char) && !lastcon) {
-            if (/a/gi.test(char)) output += lexicon.jawa.ha;
-            //else if (/e/gi.test(lastletter) && /u/gi.test(char)) output = `${lexicon.jawa.ha}${lexicon.jawa.eu}`;
-            else output += `${lexicon.jawa.ha}${lexicon.jawa[char]}`;
-            console.log('vow');
+        console.log(`${lastletter} ${lastcon}`);
+        console.log(char);
+        console.log(`${nextletter} ${nextvow}`);
+        console.log(`${input[index+2]}`);
+        console.log(`---`);
+        if (`${char}${nextletter}` == 'ng' && vowel.test(input[index+2])) {
+            if (!input[index+2]) output += `${lexicon.jawa.ng}`;
+            else if (/a/gi.test(input[index+2])) output += `${lexicon.jawa.nga}`;
+            else output += `${lexicon.jawa.nga}${lexicon.jawa[input[index+2]]}`;
+            index+=2;
         }
-        else if (/[eiou]/gi.test(char) && lastcon) {
-            var fix = lastletter + "a";
-            output += `${lexicon.jawa[fix]}${lexicon.jawa[char]}`;
-            console.log(`convow`);
+        else if (nextvow && !(vowel.test(char))) {
+            if (/a/gi.test(nextletter)) output += `${lexicon.jawa[char + "a"]}`;
+            else output += `${lexicon.jawa[char + "a"]}${lexicon.jawa[nextletter]}`;
+            index++;
         }
-        else if (/a/gi.test(char) && lastcon) {
-            var fix = lastletter + "a";
-            output += lexicon.jawa[fix];
-            console.log(fix);
+        else if ((lastvow && vowel.test(char)) || (!lastletter && vowel.test(char))) {
+            if (/a/gi.test(char)) output += `${lexicon.jawa.ha}`;
+            else output += `${lexicon.jawa.ha}${lexicon.jawa[nextletter]}`;
         }
-        else if (!(vowel.test(char)) && lastcon) {
-            var fix = lastletter + "a";
-            var xif = char + "a";
-            output += `${lexicon.jawa[fix]}${lexicon.jawa.pangkon}`
+        else if ((nextcon && !(vowel.test(char))) || (!nextletter && !(vowel.test(char)))) {
+            output += `${lexicon.jawa[char + "a"]}${lexicon.jawa.pangkon}`;
         }
-        else if (!lastcon) {
-            var fix = char + "a";
-            if (index+1 == input.length) output += `${lexicon.jawa[fix]}${lexicon.jawa.pangkon}`;
-            console.log('con');
-        }
-        else if (/\s/gi.test(char)) output += "_ ";
     }
     return output
     //return str.replace(/ha/gi, lexicon.ha);
