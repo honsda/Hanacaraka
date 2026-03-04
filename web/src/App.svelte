@@ -283,10 +283,26 @@
         <h4>2. Aksara Nglegena (Core Alphabet)</h4>
         <p class="section-desc">These are the 20 fundamental characters of the Javanese script. Each represents a syllable ending in the inherent vowel "a". When arranged in order, they form a famous poem about two messengers.</p>
         <div class="alphabet-grid prominent">
-          <div><span>ꦲ</span> ha</div><div><span>ꦤ</span> na</div><div><span>ꦕ</span> ca</div><div><span>ꦫ</span> ra</div><div><span>ꦏ</span> ka</div>
-          <div><span>ꦢ</span> da</div><div><span>ꦠ</span> ta</div><div><span>ꦱ</span> sa</div><div><span>ꦮ</span> wa</div><div><span>ꦭ</span> la</div>
-          <div><span>ꦥ</span> pa</div><div><span>ꦣ</span> dha</div><div><span>ꦗ</span> ja</div><div><span>ꦪ</span> ya</div><div><span>ꦚ</span> nya</div>
-          <div><span>ꦩ</span> ma</div><div><span>ꦒ</span> ga</div><div><span>ꦧ</span> ba</div><div><span>ꦜ</span> tha</div><div><span>ꦔ</span> nga</div>
+          <div title="ha"><span aria-label="Aksara Jawa Ha" translate="no">ꦲ</span> ha</div>
+          <div title="na"><span aria-label="Aksara Jawa Na" translate="no">ꦤ</span> na</div>
+          <div title="ca"><span aria-label="Aksara Jawa Ca" translate="no">ꦕ</span> ca</div>
+          <div title="ra"><span aria-label="Aksara Jawa Ra" translate="no">ꦫ</span> ra</div>
+          <div title="ka"><span aria-label="Aksara Jawa Ka" translate="no">ꦏ</span> ka</div>
+          <div title="da"><span aria-label="Aksara Jawa Da" translate="no">ꦢ</span> da</div>
+          <div title="ta"><span aria-label="Aksara Jawa Ta" translate="no">ꦠ</span> ta</div>
+          <div title="sa"><span aria-label="Aksara Jawa Sa" translate="no">ꦱ</span> sa</div>
+          <div title="wa"><span aria-label="Aksara Jawa Wa" translate="no">ꦮ</span> wa</div>
+          <div title="la"><span aria-label="Aksara Jawa La" translate="no">ꦭ</span> la</div>
+          <div title="pa"><span aria-label="Aksara Jawa Pa" translate="no">ꦥ</span> pa</div>
+          <div title="dha"><span aria-label="Aksara Jawa Dha" translate="no">ꦣ</span> dha</div>
+          <div title="ja"><span aria-label="Aksara Jawa Ja" translate="no">ꦗ</span> ja</div>
+          <div title="ya"><span aria-label="Aksara Jawa Ya" translate="no">ꦪ</span> ya</div>
+          <div title="nya"><span aria-label="Aksara Jawa Nya" translate="no">ꦚ</span> nya</div>
+          <div title="ma"><span aria-label="Aksara Jawa Ma" translate="no">ꦩ</span> ma</div>
+          <div title="ga"><span aria-label="Aksara Jawa Ga" translate="no">ꦒ</span> ga</div>
+          <div title="ba"><span aria-label="Aksara Jawa Ba" translate="no">ꦧ</span> ba</div>
+          <div title="tha"><span aria-label="Aksara Jawa Tha" translate="no">ꦜ</span> tha</div>
+          <div title="nga"><span aria-label="Aksara Jawa Nga" translate="no">ꦔ</span> nga</div>
         </div>
       </div>
 
