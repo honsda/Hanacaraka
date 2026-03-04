@@ -1,10 +1,11 @@
 <script>
   import { untrack } from 'svelte';
   import { fade, fly } from 'svelte/transition';
-  import { transl } from './translator.js';
+  import { transl, reverseTransl } from './translator.js';
 
   let input = $state('');
-  let output = $derived(transl(input));
+  let mode = $state('latin-to-jav'); // 'latin-to-jav' or 'jav-to-latin'
+  let output = $derived(mode === 'latin-to-jav' ? transl(input) : reverseTransl(input));
 
   let currentLang = $state('en'); // 'en' or 'id'
 
@@ -19,7 +20,8 @@
       copyBtn: "Copy Text",
       guideTitle: "Learning Guide",
       scrollDownNotice: "Scroll down for learning guide",
-      scrollTopBtn: "Back to Top"
+      scrollTopBtn: "Back to Top",
+      switchMode: "Switch Mode"
     },
     id: {
       title: "LexiJawa",
@@ -31,11 +33,18 @@
       copyBtn: "Salin",
       guideTitle: "Yuk, Belajar Aksara Jawa!",
       scrollDownNotice: "Scroll ke bawah buat lihat panduan belajar",
-      scrollTopBtn: "Balik ke Atas"
+      scrollTopBtn: "Balik ke Atas",
+      switchMode: "Ganti Mode"
     }
   };
 
   const t = $derived(translations[currentLang]);
+
+  function toggleMode() {
+    const currentOutput = output;
+    mode = mode === 'latin-to-jav' ? 'jav-to-latin' : 'latin-to-jav';
+    input = currentOutput;
+  }
 
   function copyToClipboard() {
     navigator.clipboard.writeText(output);
@@ -215,7 +224,7 @@
 
   <section class="converter">
     <div class="input-group">
-      <label for="latin-input">{t.latinLabel}</label>
+      <label for="latin-input">{mode === 'latin-to-jav' ? t.latinLabel : t.javaneseLabel}</label>
       <textarea
         id="latin-input"
         placeholder={t.placeholder}
@@ -223,11 +232,17 @@
       ></textarea>
     </div>
 
+    <div class="mode-switch-row">
+      <button class="toggle-mode-btn" on:click={toggleMode} title={t.switchMode}>
+        <span class="mode-arrow">⇅</span> {t.switchMode}
+      </button>
+    </div>
+
     <div class="input-group">
-      <label for="javanese-output">{t.javaneseLabel}</label>
+      <label for="javanese-output">{mode === 'latin-to-jav' ? t.javaneseLabel : t.latinLabel}</label>
       <div id="javanese-output" class="output-area">
         {#if output}
-          <div class="javanese-text">{output}</div>
+          <div class={mode === 'latin-to-jav' ? "javanese-text" : "latin-result-text"}>{output}</div>
         {:else}
           <span class="placeholder">{t.resultPlaceholder}</span>
         {/if}
@@ -692,6 +707,41 @@
 
   textarea:focus { outline: none; border-color: #c5a02844; box-shadow: 0 0 20px #c5a02811; }
 
+  .mode-switch-row {
+    display: flex;
+    justify-content: center;
+    margin: -1rem 0;
+    z-index: 5;
+  }
+
+  .toggle-mode-btn {
+    background: #1a1a1a;
+    border: 1px solid #c5a02844;
+    color: #c5a028;
+    padding: 0.5rem 1.2rem;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  }
+
+  .toggle-mode-btn:hover {
+    background: #c5a028;
+    color: #0f0f0f;
+    transform: scale(1.05);
+  }
+
+  .mode-arrow {
+    font-size: 1rem;
+  }
+
   .output-area { background: #050505; word-break: break-all; display: flex; align-items: flex-start; justify-content: flex-start; border-style: solid; position: relative; overflow: hidden; }
   
   .javanese-text { 
@@ -703,6 +753,14 @@
     filter: drop-shadow(0 2px 8px rgba(197, 160, 40, 0.15));
     width: 100%;
   }
+
+  .latin-result-text {
+    font-size: clamp(1.2rem, 5vw, 1.8rem);
+    line-height: 1.6;
+    color: #f1e5ac;
+    width: 100%;
+  }
+
   .placeholder { color: #3d3a2f; font-style: italic; font-size: 1rem; }
 
   .copy-btn {
