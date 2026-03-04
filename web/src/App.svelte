@@ -662,7 +662,7 @@
     font-size: clamp(0.8rem, 3vw, 1.1rem); 
     letter-spacing: 0.4em; 
     text-transform: uppercase; 
-    margin: 0; 
+    margin: -0.6rem 0 0 1.2rem; 
     color: #8e7218;
     opacity: 0.8;
   }
