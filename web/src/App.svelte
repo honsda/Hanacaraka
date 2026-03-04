@@ -1,5 +1,6 @@
 <script>
   import { untrack } from 'svelte';
+  import { fade, fly } from 'svelte/transition';
   import { transl } from './translator.js';
 
   let input = $state('');
@@ -202,10 +203,14 @@
   <header>
     <div class="title-row">
       <h1>ꦭꦺꦏ꧀ꦱꦶꦗꦮ</h1>
-      <span class="scroll-notice">{t.scrollDownNotice} &darr;</span>
+      {#key currentLang}
+        <span class="scroll-notice" in:fade={{ duration: 400 }}>{t.scrollDownNotice} &darr;</span>
+      {/key}
     </div>
-    <h3>{t.title}</h3>
-    <p class="subtitle">{t.subtitle}</p>
+    {#key currentLang}
+      <h3 in:fade={{ duration: 400 }}>{t.title}</h3>
+      <p class="subtitle" in:fade={{ duration: 400 }}>{t.subtitle}</p>
+    {/key}
   </header>
 
   <section class="converter">
@@ -465,7 +470,11 @@
   </div>
 
   {#if showScrollTop}
-    <button class="scroll-top-btn" on:click={scrollToTop}>
+    <button 
+      class="scroll-top-btn" 
+      on:click={scrollToTop}
+      transition:fade={{ duration: 300 }}
+    >
       &uarr; {t.scrollTopBtn}
     </button>
   {/if}
@@ -520,6 +529,11 @@
     font-weight: bold;
     font-size: 0.9rem;
     letter-spacing: 0.05em;
+    transition: color 0.3s ease;
+  }
+
+  .nav-logo:hover {
+    color: #f1e5ac;
   }
 
   .lang-switch {
@@ -537,14 +551,22 @@
     cursor: pointer;
     padding: 0.2rem 0.5rem;
     font-size: 0.8rem;
-    transition: all 0.3s;
+    font-weight: 300;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     border-radius: 4px;
+    letter-spacing: 0.02em;
+  }
+
+  .lang-switch button:hover:not(.active) {
+    color: #8e7218;
+    background: rgba(197, 160, 40, 0.05);
   }
 
   .lang-switch button.active {
     color: #c5a028;
-    font-weight: bold;
+    font-weight: 300;
     background: rgba(197, 160, 40, 0.1);
+    letter-spacing: 0.02em;
   }
 
   main {
@@ -784,12 +806,34 @@
 
   .demo-tabs { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 2rem; width: 100%; }
   .demo-tabs button {
-    background: #0a0a0a; border: 1px solid #1a1a1a; color: #5c584a;
-    padding: 0.6rem 1.2rem; border-radius: 6px; cursor: pointer; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.1em; transition: all 0.3s ease;
-    flex: 1; min-width: 120px;
+    background: #0a0a0a; 
+    border: 1px solid #1a1a1a; 
+    color: #5c584a;
+    padding: 0.6rem 1.2rem; 
+    border-radius: 6px; 
+    cursor: pointer; 
+    text-transform: uppercase; 
+    font-size: 0.75rem; 
+    letter-spacing: 0.1em; 
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    flex: 1; 
+    min-width: 120px;
   }
-  .demo-tabs button:hover { border-color: #c5a02822; color: #8e7218; }
-  .demo-tabs button.active { background: linear-gradient(135deg, #c5a028, #8e7218); color: #0f0f0f; font-weight: 900; border-color: transparent; box-shadow: 0 4px 12px rgba(197, 160, 40, 0.2); }
+
+  .demo-tabs button:hover:not(.active) { 
+    border-color: #c5a02844; 
+    color: #8e7218; 
+    background: rgba(197, 160, 40, 0.05);
+  }
+
+  .demo-tabs button.active { 
+    background: linear-gradient(135deg, #c5a028, #8e7218); 
+    color: #0f0f0f; 
+    font-weight: 300; 
+    border-color: transparent; 
+    box-shadow: 0 4px 12px rgba(197, 160, 40, 0.2); 
+    transform: translateY(-2px);
+  }
 
   .pasangan-demo { display: flex; align-items: center; justify-content: center; gap: 2.5rem; margin-top: 1.5rem; padding: 2rem; background: #050505; border-radius: 10px; border: 1px solid #151515; flex-wrap: wrap; width: 100%; }
   .step-jav { font-size: clamp(2rem, 6vw, 2.8rem); background: linear-gradient(180deg, #f1e5ac, #c5a028); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
