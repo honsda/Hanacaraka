@@ -23,15 +23,15 @@
     },
     id: {
       title: "LexiJawa",
-      subtitle: "Konverter Latin ke Aksara Jawa",
+      subtitle: "Ubah tulisan Latin ke Aksara Jawa",
       latinLabel: "Latin",
-      javaneseLabel: "Jawa",
-      placeholder: "Ketik di sini (contoh: 'mangan' atau 'hanacaraka')",
-      resultPlaceholder: "Hasil akan muncul di sini...",
-      copyBtn: "Salin Teks",
-      guideTitle: "Panduan Belajar",
-      scrollDownNotice: "Gulir ke bawah untuk panduan belajar",
-      scrollTopBtn: "Kembali ke Atas"
+      javaneseLabel: "Aksara Jawa",
+      placeholder: "Tulis di sini (contoh: 'mangan' atau 'hanacaraka')",
+      resultPlaceholder: "Hasilnya bakal muncul di sini...",
+      copyBtn: "Salin",
+      guideTitle: "Yuk, Belajar Aksara Jawa!",
+      scrollDownNotice: "Scroll ke bawah buat lihat panduan belajar",
+      scrollTopBtn: "Balik ke Atas"
     }
   };
 
