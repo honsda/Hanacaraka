@@ -523,7 +523,7 @@
   :global(body) {
     margin: 0;
     padding: 0;
-    font-family: 'Inter', system-ui, sans-serif;
+    font-family: system-ui, -apple-system, sans-serif;
     background-color: #0f0f0f;
     color: #f1e5ac;
     display: flex;
@@ -534,9 +534,8 @@
   }
 
   .javanese-text, [translate="no"], .p-jav, .feature-icon, .step-jav, .sand-sect li span, .rekan-item span, .ex-header span, .alphabet-grid span {
-    font-family: 'Noto Sans Javanese', 'Inter', serif;
+    font-family: 'Noto Sans Javanese', serif;
   }
-
   .navbar {
     position: sticky;
     top: 1rem;
