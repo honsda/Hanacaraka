@@ -646,14 +646,14 @@
   }
   
   h1 { 
-    font-size: clamp(2.5rem, 10vw, 4.2rem); 
+    font-size: clamp(2rem, 8vw, 3.5rem); 
     background: linear-gradient(135deg, #c5a028 0%, #f1e5ac 50%, #8e7218 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     margin: 0; 
     line-height: 1.4;
     filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
-    padding: 0.5rem 0 1.2rem 0;
+    padding: 1.5rem 0 1.2rem 0;
     overflow: visible;
     font-family: 'Javanese Text', 'Noto Sans Javanese', serif;
   }
