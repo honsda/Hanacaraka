@@ -5,12 +5,56 @@
   let input = $state('');
   let output = $derived(transl(input));
 
+  let currentLang = $state('en'); // 'en' or 'id'
+
+  const translations = {
+    en: {
+      title: "LexiJawa",
+      subtitle: "Latin to Javanese Script Converter",
+      latinLabel: "Latin",
+      javaneseLabel: "Javanese",
+      placeholder: "Type here (e.g., 'mangan' or 'hanacaraka')",
+      resultPlaceholder: "Result will appear here...",
+      copyBtn: "Copy Text",
+      guideTitle: "Learning Guide",
+      scrollDownNotice: "Scroll down for learning guide",
+      scrollTopBtn: "Back to Top"
+    },
+    id: {
+      title: "LexiJawa",
+      subtitle: "Konverter Latin ke Aksara Jawa",
+      latinLabel: "Latin",
+      javaneseLabel: "Jawa",
+      placeholder: "Ketik di sini (contoh: 'mangan' atau 'hanacaraka')",
+      resultPlaceholder: "Hasil akan muncul di sini...",
+      copyBtn: "Salin Teks",
+      guideTitle: "Panduan Belajar",
+      scrollDownNotice: "Gulir ke bawah untuk panduan belajar",
+      scrollTopBtn: "Kembali ke Atas"
+    }
+  };
+
+  const t = $derived(translations[currentLang]);
+
   function copyToClipboard() {
     navigator.clipboard.writeText(output);
   }
 
+  let showScrollTop = $state(false);
+
+  function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  if (typeof window !== 'undefined') {
+    window.addEventListener('scroll', () => {
+      showScrollTop = window.scrollY > 400;
+    });
+  }
+
   // Multi-method Demo Logic
   let activeTab = $state('phonetic');
+  // ... rest of demo logic remains same ...
   let demoInput = $state('');
   let demoOutput = $state('');
   let isTyping = $state(true);
@@ -143,44 +187,58 @@
   });
 </script>
 
+<nav class="navbar">
+  <div class="nav-container">
+    <a href="https://honsda.github.io" class="nav-logo">honsda.github.io</a>
+    <div class="lang-switch">
+      <button class:active={currentLang === 'id'} on:click={() => currentLang = 'id'}>ID</button>
+      <span>|</span>
+      <button class:active={currentLang === 'en'} on:click={() => currentLang = 'en'}>EN</button>
+    </div>
+  </div>
+</nav>
+
 <main>
   <header>
-    <h1>ꦭꦺꦏ꧀ꦱꦶꦗꦮ</h1>
-    <h3>LexiJawa</h3>
-    <p class="subtitle">Latin to Javanese Script Converter | Konverter Latin ke Aksara Jawa</p>
+    <div class="title-row">
+      <h1>ꦭꦺꦏ꧀ꦱꦶꦗꦮ</h1>
+      <span class="scroll-notice">{t.scrollDownNotice} &darr;</span>
+    </div>
+    <h3>{t.title}</h3>
+    <p class="subtitle">{t.subtitle}</p>
   </header>
 
   <section class="converter">
     <div class="input-group">
-      <label for="latin-input">Latin</label>
+      <label for="latin-input">{t.latinLabel}</label>
       <textarea
         id="latin-input"
-        placeholder="Type here (e.g., 'mangan' or 'hanacaraka')"
+        placeholder={t.placeholder}
         bind:value={input}
       ></textarea>
     </div>
 
     <div class="input-group">
-      <label for="javanese-output">Javanese</label>
+      <label for="javanese-output">{t.javaneseLabel}</label>
       <div id="javanese-output" class="output-area">
         {#if output}
           <div class="javanese-text">{output}</div>
         {:else}
-          <span class="placeholder">Result will appear here...</span>
+          <span class="placeholder">{t.resultPlaceholder}</span>
         {/if}
       </div>
     </div>
 
     {#if output}
       <button class="copy-btn" on:click={copyToClipboard}>
-        Copy Text
+        {t.copyBtn}
       </button>
     {/if}
   </section>
 
   <div class="guide">
     <div class="guide-header">
-      <h2>Learning Guide</h2>
+      <h2>{t.guideTitle}</h2>
       <div class="gilded-line"></div>
     </div>
 
@@ -405,6 +463,12 @@
       </div>
     </div>
   </div>
+
+  {#if showScrollTop}
+    <button class="scroll-top-btn" on:click={scrollToTop}>
+      &uarr; {t.scrollTopBtn}
+    </button>
+  {/if}
 </main>
 
 <footer>
@@ -421,9 +485,66 @@
     background-color: #0f0f0f;
     color: #f1e5ac;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
     overflow-x: hidden;
     width: 100%;
+  }
+
+  .navbar {
+    position: sticky;
+    top: 1rem;
+    width: 90%;
+    margin: 1rem auto 0;
+    background: rgba(18, 18, 18, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid #c5a02844;
+    border-radius: 12px;
+    z-index: 1000;
+    padding: 0.75rem 1.5rem;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+  }
+
+  .nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 900px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .nav-logo {
+    color: #c5a028;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 0.9rem;
+    letter-spacing: 0.05em;
+  }
+
+  .lang-switch {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #444;
+    font-size: 0.8rem;
+  }
+
+  .lang-switch button {
+    background: none;
+    border: none;
+    color: #5c584a;
+    cursor: pointer;
+    padding: 0.2rem 0.5rem;
+    font-size: 0.8rem;
+    transition: all 0.3s;
+    border-radius: 4px;
+  }
+
+  .lang-switch button.active {
+    color: #c5a028;
+    font-weight: bold;
+    background: rgba(197, 160, 40, 0.1);
   }
 
   main {
@@ -440,6 +561,30 @@
     margin-bottom: 4rem; 
     width: 100%; 
     padding-top: 1rem;
+  }
+
+  .title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 1rem;
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+
+  .scroll-notice {
+    font-size: 0.8rem;
+    color: #6b6654;
+    font-style: italic;
+    margin-bottom: 0.8rem;
+    animation: bounce 2s infinite;
+  }
+
+  @keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+    40% {transform: translateY(-5px);}
+    60% {transform: translateY(-3px);}
   }
   
   h1 { 
@@ -687,4 +832,30 @@
     header { margin-bottom: 2.5rem; }
     h1 { padding-bottom: 0.1em; }
   }
-</style>
+
+  .scroll-top-btn {
+    position: fixed;
+    bottom: 2rem;
+    left: 2rem;
+    background: rgba(18, 18, 18, 0.9);
+    border: 1px solid #c5a028;
+    color: #c5a028;
+    padding: 0.8rem 1.2rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    z-index: 1001;
+    backdrop-filter: blur(5px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: bold;
+  }
+
+  .scroll-top-btn:hover {
+    background: #c5a028;
+    color: #0f0f0f;
+    transform: translateY(-5px);
+  }
+  </style>
