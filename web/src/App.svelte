@@ -533,6 +533,10 @@
     width: 100%;
   }
 
+  .javanese-text, [translate="no"], .p-jav, .feature-icon, .step-jav, .sand-sect li span, .rekan-item span, .ex-header span, .alphabet-grid span {
+    font-family: 'Noto Sans Javanese', 'Inter', serif;
+  }
+
   .navbar {
     position: sticky;
     top: 1rem;
