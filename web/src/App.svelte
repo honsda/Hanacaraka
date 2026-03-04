@@ -151,11 +151,8 @@
       if (stepIdx < currentSteps.length) {
         demoInput = currentSteps[stepIdx].in;
         demoOutput = currentSteps[stepIdx].out;
-        
-        console.log(`Example ID: ${exampleIdx} | Sequence: ${demoInput} -> ${demoOutput}`);
-        
-        stepIdx++;
-        demoTimeout = setTimeout(runDemo, 500);
+
+        stepIdx++;        demoTimeout = setTimeout(runDemo, 500);
       } else {
         isTyping = false;
         demoTimeout = setTimeout(runDemo, 2000);
