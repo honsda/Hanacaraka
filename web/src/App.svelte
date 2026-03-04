@@ -15,7 +15,8 @@
       subtitle: "Latin to Javanese Script Converter",
       latinLabel: "Latin",
       javaneseLabel: "Javanese",
-      placeholder: "Type here (e.g., 'mangan' or 'hanacaraka')",
+      placeholderLatin: "Type here (e.g., 'mangan' or 'hanacaraka')",
+      placeholderJav: "ꦠꦸꦭꦶꦱ꧀ꦤꦶꦁꦏꦺꦤꦺ (Type Javanese script here...)",
       resultPlaceholder: "Result will appear here...",
       copyBtn: "Copy Text",
       guideTitle: "Learning Guide",
@@ -28,7 +29,8 @@
       subtitle: "Ubah tulisan Latin ke Aksara Jawa",
       latinLabel: "Latin",
       javaneseLabel: "Aksara Jawa",
-      placeholder: "Tulis di sini (contoh: 'mangan' atau 'hanacaraka')",
+      placeholderLatin: "Tulis di sini (contoh: 'mangan' atau 'hanacaraka')",
+      placeholderJav: "ꦠꦸꦭꦶꦱ꧀ꦤꦶꦁꦏꦺꦤ꺺 (Tulis Aksara Jawa di sini...)",
       resultPlaceholder: "Hasilnya bakal muncul di sini...",
       copyBtn: "Salin",
       guideTitle: "Yuk, Belajar Aksara Jawa!",
@@ -227,7 +229,7 @@
       <label for="latin-input">{mode === 'latin-to-jav' ? t.latinLabel : t.javaneseLabel}</label>
       <textarea
         id="latin-input"
-        placeholder={t.placeholder}
+        placeholder={mode === 'latin-to-jav' ? t.placeholderLatin : t.placeholderJav}
         bind:value={input}
       ></textarea>
     </div>
