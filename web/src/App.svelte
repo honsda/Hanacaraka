@@ -651,9 +651,11 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     margin: 0; 
-    line-height: 1.2;
+    line-height: 1.4;
     filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
-    padding-bottom: 0.2em;
+    padding: 0.5rem 0 1.2rem 0;
+    overflow: visible;
+    font-family: 'Javanese Text', 'Noto Sans Javanese', serif;
   }
   
   h3 { 
