@@ -1,4 +1,5 @@
 <script>
+  import { untrack } from 'svelte';
   import { transl } from './translator.js';
 
   let input = $state('');
@@ -51,7 +52,7 @@
         { in: 'k', out: 'ꦏ' }, { in: 'ko', out: 'ꦏꦺꦴ' }, { in: 'kop', out: 'ꦏꦺꦴꦥ' }, { in: 'kopi', out: 'ꦏꦺꦴꦥꦶ' }
       ],
       mobile: [
-        { in: 'ꦏ', out: 'ꦏ' }, { in: 'ꦏꦺꦴ', out: 'ꦏꦺꦴ' }, { in: 'ꦏꦺꦴꦥ', out: 'ꦏꦺꦴꦥ' }, { in: 'ꦏꦺꦴꦥꦶ', out: 'ꦏꦺꦴꦥꦶ' }
+        { in: 'ꦏ', out: 'ꦏ' }, { in: 'ꦏꦺꦴ', out: 'ꦏꦺꦴ' }, { in: 'ꦏꦺꦴꦥ', out: 'ꦏꦺꦴꦥ' }, { in: 'ꦏꦺꦴꦥꦶ', out: 'ꦺꦴꦥꦶ' }
       ]
     },
     {
@@ -85,7 +86,8 @@
 
   function runDemo() {
     const currentTab = activeTab;
-    const currentExample = demoExamples[exampleIdx];
+    const currentExampleIdx = exampleIdx;
+    const currentExample = demoExamples[currentExampleIdx];
     const currentSteps = currentExample[currentTab];
     if (!currentSteps) return;
 
@@ -93,6 +95,9 @@
       if (stepIdx < currentSteps.length) {
         demoInput = currentSteps[stepIdx].in;
         demoOutput = currentSteps[stepIdx].out;
+        
+        console.log(`Example ID: ${exampleIdx} | Sequence: ${demoInput} -> ${demoOutput}`);
+        
         stepIdx++;
         demoTimeout = setTimeout(runDemo, 500);
       } else {
@@ -119,15 +124,18 @@
   }
 
   $effect(() => {
-    // Re-initialize demo when tab or example changes
-    const _tab = activeTab;
-    const _ex = exampleIdx;
-    clearTimeout(demoTimeout);
-    stepIdx = 0;
-    demoInput = '';
-    demoOutput = '';
-    isTyping = true;
-    runDemo();
+    // Only re-run when these change
+    activeTab;
+    exampleIdx;
+
+    untrack(() => {
+      clearTimeout(demoTimeout);
+      stepIdx = 0;
+      demoInput = '';
+      demoOutput = '';
+      isTyping = true;
+      runDemo();
+    });
 
     return () => {
       clearTimeout(demoTimeout);
@@ -210,7 +218,7 @@
 
       <div class="guide-card full-width core-alphabet">
         <h4>2. Aksara Nglegena (Core Alphabet)</h4>
-        <p class="section-desc">These are the 20 fundamental characters. Each represents a syllable ending in "a". Arranged in order, they tell the legend of two messengers: <em>"There were two messengers, they had a grudge, they were equally strong, here lie their corpses."</em></p>
+        <p class="section-desc">These are the 20 fundamental characters of the Javanese script. Each represents a syllable ending in the inherent vowel "a". When arranged in order, they form a famous poem about two messengers.</p>
         <div class="alphabet-grid prominent">
           <div><span>ꦲ</span> ha</div><div><span>ꦤ</span> na</div><div><span>ꦕ</span> ca</div><div><span>ꦫ</span> ra</div><div><span>ꦏ</span> ka</div>
           <div><span>ꦢ</span> da</div><div><span>ꦠ</span> ta</div><div><span>ꦱ</span> sa</div><div><span>ꦮ</span> wa</div><div><span>ꦭ</span> la</div>
@@ -221,7 +229,7 @@
 
       <div class="guide-card full-width">
         <h4>3. Pasangan (Subscripts)</h4>
-        <p>When two consonants meet without a vowel between them, the second consonant takes its <strong>Pasangan</strong> form. This form is usually written below or attached to the first, effectively "killing" the inherent vowel of the preceding character.</p>
+        <p>When two consonants meet without a vowel between them in the middle of a word (like the 'nd' in "pando"), the second consonant takes its <strong>Pasangan</strong> form. This form is usually written below or attached to the first consonant, effectively "killing" its inherent vowel.</p>
         <div class="example-box">
           <h5>Visual Demo:</h5>
           <div class="pasangan-demo">
@@ -240,33 +248,33 @@
 
       <div class="guide-card full-width">
         <h4>4. Sandhangan (Diacritics)</h4>
-        <p>Diacritics are marks added to modify the sound of a base character. They are essential for forming full words beyond the basic "a" sounds.</p>
+        <p>Diacritics are marks added to the base character to change its sound. They can change the vowel, add a final consonant sound, or create semi-vowels.</p>
         <div class="sandhangan-grid">
           <div class="sand-sect">
             <h5>Vowels (Swara)</h5>
             <ul>
-              <li><span>ꦶ</span> <strong>Wulu:</strong> (i)</li>
-              <li><span>ꦸ</span> <strong>Suku:</strong> (u)</li>
-              <li><span>ꦺ</span> <strong>Taling:</strong> (é)</li>
-              <li><span>ꦺꦴ</span> <strong>Taling Tarung:</strong> (o)</li>
-              <li><span>ꦼ</span> <strong>Pepet:</strong> (ê)</li>
+              <li><span>ꦶ</span> <strong>Wulu:</strong> changes 'a' to 'i'</li>
+              <li><span>ꦸ</span> <strong>Suku:</strong> changes 'a' to 'u'</li>
+              <li><span>ꦺ</span> <strong>Taling:</strong> changes 'a' to 'é'</li>
+              <li><span>ꦺꦴ</span> <strong>Taling Tarung:</strong> changes 'a' to 'o'</li>
+              <li><span>ꦼ</span> <strong>Pepet:</strong> changes 'a' to 'ê'</li>
             </ul>
           </div>
           <div class="sand-sect">
             <h5>Finals (Panyigeg)</h5>
             <ul>
-              <li><span>ꦃ</span> <strong>Wignyan:</strong> (-h)</li>
-              <li><span>ꦂ</span> <strong>Layar:</strong> (-r)</li>
-              <li><span>ꦁ</span> <strong>Cecak:</strong> (-ng)</li>
-              <li><span>꧀</span> <strong>Pangkon:</strong> (Mute)</li>
+              <li><span>ꦃ</span> <strong>Wignyan:</strong> adds final '-h'</li>
+              <li><span>ꦂ</span> <strong>Layar:</strong> adds final '-r'</li>
+              <li><span>ꦁ</span> <strong>Cecak:</strong> adds final '-ng'</li>
+              <li><span>꧀</span> <strong>Pangkon:</strong> mutes the vowel</li>
             </ul>
           </div>
           <div class="sand-sect">
             <h5>Semivowels</h5>
             <ul>
-              <li><span>ꦿ</span> <strong>Cakra:</strong> (-r-)</li>
-              <li><span>ꦾ</span> <strong>Pengkal:</strong> (-y-)</li>
-              <li><span>ꦽ</span> <strong>Keret:</strong> (-rê-)</li>
+              <li><span>ꦿ</span> <strong>Cakra:</strong> adds medial '-r-'</li>
+              <li><span>ꦾ</span> <strong>Pengkal:</strong> adds medial '-y-'</li>
+              <li><span>ꦽ</span> <strong>Keret:</strong> adds medial '-rê-'</li>
             </ul>
           </div>
         </div>
@@ -274,7 +282,7 @@
 
       <div class="guide-card full-width">
         <h4>5. Aksara Rekan (Foreign Sounds)</h4>
-        <p> loanwords often require sounds not native to ancient Javanese. <strong>Aksara Rekan</strong> accommodates these by adding three dots above a similar base character.</p>
+        <p>Originally, Javanese lacked characters for sounds like "f", "z", or "kh". <strong>Aksara Rekan</strong> was developed to represent these sounds in loanwords (mostly from Arabic). They are formed by adding three dots (<em>cecak telu</em>) above a similar base character.</p>
         <div class="rekan-tags-detailed">
           <div class="rekan-item"><span>ꦏ꦳</span> <strong>kh</strong> (from 'ka')</div>
           <div class="rekan-item"><span>ꦥ꦳</span> <strong>f/v</strong> (from 'pa')</div>
@@ -287,7 +295,7 @@
 
       <div class="guide-card full-width">
         <h4>6. Aksara Angka (Numerals)</h4>
-        <p>Javanese numerals look similar to some letters. To avoid confusion, they are typically enclosed in <strong>Pada Pangkat</strong> (꧇).</p>
+        <p>Javanese has its own set of digits. When writing numbers, they are typically enclosed in <strong>Pada Pangkat</strong> (꧇) to distinguish them from letters, as some numerals look identical to certain alphabet characters.</p>
         <div class="alphabet-grid">
           <div><span>꧑</span> 1</div><div><span>꧒</span> 2</div><div><span>꧓</span> 3</div><div><span>꧔</span> 4</div><div><span>꧕</span> 5</div>
           <div><span>꧖</span> 6</div><div><span>꧗</span> 7</div><div><span>꧘</span> 8</div><div><span>꧙</span> 9</div><div><span>꧐</span> 0</div>
@@ -296,18 +304,19 @@
 
       <div class="guide-card full-width">
         <h4>7. Punctuations (Pratandha)</h4>
+        <p>Javanese uses unique symbols for punctuation. Unlike the Latin system, these symbols often signal the structure of a poetic or prose composition.</p>
         <div class="punct-grid">
           <div class="punct-item">
             <span class="p-jav">꧈</span>
-            <div class="p-info"><strong>Pada Lingsa:</strong> (Comma) Used to indicate a slight pause.</div>
+            <div class="p-info"><strong>Pada Lingsa:</strong> Functions like a <strong>Comma (,)</strong>. Used to indicate a slight pause.</div>
           </div>
           <div class="punct-item">
             <span class="p-jav">꧉</span>
-            <div class="p-info"><strong>Pada Lungsi:</strong> (Period) Used at the end of a sentence.</div>
+            <div class="p-info"><strong>Pada Lungsi:</strong> Functions like a <strong>Period (.)</strong>. Used at the end of a sentence.</div>
           </div>
           <div class="punct-item">
             <span class="p-jav">꧇</span>
-            <div class="p-info"><strong>Pada Pangkat:</strong> (Colon) Used for lists or numeric enclosures.</div>
+            <div class="p-info"><strong>Pada Pangkat:</strong> Functions like a <strong>Colon (:)</strong>. Used for lists or before quotes.</div>
           </div>
         </div>
       </div>
@@ -324,7 +333,7 @@
         <div class="tutorial-split">
           <div class="tut-text">
             {#if activeTab === 'phonetic'}
-              <p>Type the Latin equivalent of the sounds. Merging and diacritics are handled automatically. This is the recommended method for this converter.</p>
+              <p>Type the Latin equivalent of the sounds. The converter handles merging and diacritics automatically. This is the most intuitive method for beginners.</p>
               <ul>
                 <li><strong>Basic:</strong> 'ha', 'na', 'ca'...</li>
                 <li><strong>Vowels:</strong> 'i', 'u', 'e', 'o', 'x' (ê)</li>
@@ -357,6 +366,7 @@
 
       <div class="guide-card full-width">
         <h4>9. Practical Examples</h4>
+        <p class="section-desc">See how different sounds and combinations are constructed using the rules above.</p>
         <div class="example-grid-detailed">
           <div class="ex-detail-item">
             <div class="ex-header"><span>ꦤꦺꦒꦫ</span><strong>Negara</strong></div>
@@ -548,7 +558,8 @@
 
   .full-width { grid-column: 1 / -1; }
 
-  .section-desc { font-size: 0.9rem; color: #6b6654; margin-bottom: 1.5rem; line-height: 1.6; }
+  .guide-card p { color: #9e9882; line-height: 1.6; margin-top: 0; }
+  .section-desc { font-size: 0.9rem; color: #9e9882; margin-bottom: 1.5rem; line-height: 1.6; }
 
   .alphabet-grid {
     display: grid;
@@ -603,7 +614,7 @@
     border: 1px solid #c5a02818; 
     box-shadow: 0 10px 30px rgba(0,0,0,0.4); 
     width: 100%;
-    min-height: 280px;
+    min-height: 360px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -614,11 +625,13 @@
   .demo-display .text { font-size: clamp(1rem, 4vw, 1.2rem); min-height: 1.5em; color: #d4ccb0; font-family: monospace; }
   .demo-output-row .text { 
     font-size: clamp(1.5rem, 6vw, 2.4rem); 
-    line-height: 1.2;
+    line-height: 2;
     background: linear-gradient(to bottom, #f1e5ac, #c5a028);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    min-height: 1.2em;
+    min-height: 2.5em;
+    padding-bottom: 2.5rem;
+    display: block;
   }
   .cursor { animation: blink 0.8s infinite; color: #c5a028; display: inline-block; margin-left: 2px; font-weight: 100; }
   @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
