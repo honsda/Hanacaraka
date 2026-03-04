@@ -1,14 +1,11 @@
-const lexicon = require('./lexicon.json');
-const readline = require('readline').createInterface({
-  input: process.stdin,
-  output: process.stdout
-});
+import lexicon from './lexicon.json';
 
 const consonantsList = Object.keys(lexicon.consonants).sort((a, b) => b.length - a.length);
-const finalConsonantsList = Object.keys(lexicon.final).sort((a, b) => b.length - a.length);
 const vowelsList = Object.keys(lexicon.vowels).sort((a, b) => b.length - a.length);
+const punctuationsList = Object.keys(lexicon.punctuations || {}).sort((a, b) => b.length - a.length);
 
-function transl(input) {
+export function transl(input) {
+    if (!input) return "";
     let output = "";
     let i = 0;
     const lowerInput = input.toLowerCase();
@@ -16,14 +13,26 @@ function transl(input) {
     while (i < lowerInput.length) {
         let char = lowerInput[i];
 
-        // Skip whitespace
         if (/\s/.test(char)) {
             output += " ";
             i++;
             continue;
         }
 
-        // Try to match a consonant
+        let matchedPunctuation = null;
+        for (const p of punctuationsList) {
+            if (lowerInput.startsWith(p, i)) {
+                matchedPunctuation = p;
+                break;
+            }
+        }
+
+        if (matchedPunctuation) {
+            output += lexicon.punctuations[matchedPunctuation];
+            i += matchedPunctuation.length;
+            continue;
+        }
+
         let matchedConsonant = null;
         for (const c of consonantsList) {
             if (lowerInput.startsWith(c, i)) {
@@ -35,7 +44,6 @@ function transl(input) {
         if (matchedConsonant) {
             let nextIndex = i + matchedConsonant.length;
             
-            // Check if there's a vowel after this consonant
             let matchedVowel = null;
             for (const v of vowelsList) {
                 if (lowerInput.startsWith(v, nextIndex)) {
@@ -45,22 +53,19 @@ function transl(input) {
             }
 
             if (matchedVowel !== null) {
-                // Syllable with vowel: Consonant + Vowel
                 output += lexicon.consonants[matchedConsonant] + lexicon.vowels[matchedVowel];
                 i = nextIndex + matchedVowel.length;
+            } else if (lexicon.final[matchedConsonant]) {
+                output += lexicon.final[matchedConsonant];
+                i = nextIndex;
+            } else if (nextIndex < lowerInput.length) {
+                output += lexicon.consonants[matchedConsonant] + lexicon.pangkon;
+                i = nextIndex;
             } else {
-                // Consonant with no vowel (Final consonant or Cluster)
-                // If it's a special final consonant (ng, r, h), use the sign
-                if (lexicon.final[matchedConsonant]) {
-                    output += lexicon.final[matchedConsonant];
-                } else {
-                    // Use pangkon
-                    output += lexicon.consonants[matchedConsonant] + lexicon.pangkon;
-                }
+                output += lexicon.consonants[matchedConsonant];
                 i = nextIndex;
             }
         } else {
-            // Not a consonant, check if it's a standalone vowel
             let matchedVowel = null;
             for (const v of vowelsList) {
                 if (lowerInput.startsWith(v, i)) {
@@ -70,11 +75,9 @@ function transl(input) {
             }
 
             if (matchedVowel !== null) {
-                // Standalone vowel: 'ha' + Vowel
                 output += lexicon.consonants['h'] + lexicon.vowels[matchedVowel];
                 i += matchedVowel.length;
             } else {
-                // Unknown character, just pass it through
                 output += char;
                 i++;
             }
@@ -82,16 +85,3 @@ function transl(input) {
     }
     return output;
 }
-
-function promptUser() {
-  readline.question('Input, Latin to Javanese (type "exit" to quit) >> ', input => {
-    if (input.toLowerCase() === 'exit' || input.toLowerCase() === 'quit') {
-      readline.close();
-      return;
-    }
-    console.log(`Result: ${transl(input)}\n`);
-    promptUser();
-  });
-}
-
-promptUser();
