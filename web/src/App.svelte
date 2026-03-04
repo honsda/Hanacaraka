@@ -2,43 +2,14 @@
   import { untrack } from 'svelte';
   import { fade, fly } from 'svelte/transition';
   import { transl, reverseTransl } from './translator.js';
+  import { translations } from './translations.js';
+  import { demoExamples } from './demoData.js';
 
   let input = $state('');
   let mode = $state('latin-to-jav'); // 'latin-to-jav' or 'jav-to-latin'
   let output = $derived(mode === 'latin-to-jav' ? transl(input) : reverseTransl(input));
 
   let currentLang = $state('en'); // 'en' or 'id'
-
-  const translations = {
-    en: {
-      title: "LexiJawa",
-      subtitle: "Latin to Javanese Script Converter",
-      latinLabel: "Latin",
-      javaneseLabel: "Javanese",
-      placeholderLatin: "Type here (e.g., 'mangan' or 'hanacaraka')",
-      placeholderJav: "ꦠꦸꦭꦶꦱ꧀ꦤꦶꦁꦏꦺꦤꦺ (Type Javanese script here...)",
-      resultPlaceholder: "Result will appear here...",
-      copyBtn: "Copy Text",
-      guideTitle: "Learning Guide",
-      scrollDownNotice: "Scroll down for learning guide",
-      scrollTopBtn: "Back to Top",
-      switchMode: "Switch Mode"
-    },
-    id: {
-      title: "LexiJawa",
-      subtitle: "Ubah tulisan Latin ke Aksara Jawa",
-      latinLabel: "Latin",
-      javaneseLabel: "Aksara Jawa",
-      placeholderLatin: "Tulis di sini (contoh: 'mangan' atau 'hanacaraka')",
-      placeholderJav: "ꦠꦸꦭꦶꦱ꧀ꦤꦶꦁꦏꦺꦤ꺺 (Tulis Aksara Jawa di sini...)",
-      resultPlaceholder: "Hasilnya bakal muncul di sini...",
-      copyBtn: "Salin",
-      guideTitle: "Yuk, Belajar Aksara Jawa!",
-      scrollDownNotice: "Scroll ke bawah buat lihat panduan belajar",
-      scrollTopBtn: "Balik ke Atas",
-      switchMode: "Ganti Mode"
-    }
-  };
 
   const t = $derived(translations[currentLang]);
 
@@ -66,76 +37,10 @@
 
   // Multi-method Demo Logic
   let activeTab = $state('phonetic');
-  // ... rest of demo logic remains same ...
   let demoInput = $state('');
   let demoOutput = $state('');
   let isTyping = $state(true);
   let demoTimeout;
-
-  const demoExamples = [
-    {
-      name: "mangan",
-      phonetic: [
-        { in: 'm', out: 'ꦩ' }, { in: 'ma', out: 'ꦩ' }, { in: 'man', out: 'ꦩꦤ' },
-        { in: 'mang', out: 'ꦩꦁ' }, { in: 'manga', out: 'ꦩꦔ' }, { in: 'mangan', out: 'ꦩꦔꦤ' },
-        { in: 'mangan ', out: 'ꦩꦔꦤ꧀ ' }
-      ],
-      windows: [
-        { in: 'm', out: 'ꦩ' }, { in: 'mG', out: 'ꦩꦔ' }, { in: 'mGn', out: 'ꦩꦔꦤ' }, { in: 'mGn[', out: 'ꦩꦔꦤ꧀' }
-      ],
-      mobile: [
-        { in: 'ꦩ', out: 'ꦩ' }, { in: 'ꦩꦔ', out: 'ꦩꦔ' }, { in: 'ꦩꦔꦤ', out: 'ꦩꦔꦤ' }, { in: 'ꦩꦔꦤ꧀', out: 'ꦩꦔꦤ꧀' }
-      ]
-    },
-    {
-      name: "buku",
-      phonetic: [
-        { in: 'b', out: 'ꦧ' }, { in: 'bu', out: 'ꦧꦸ' }, { in: 'buk', out: 'ꦧꦸꦏ꧀' }, { in: 'buku', out: 'ꦧꦸꦏꦸ' }
-      ],
-      windows: [
-        { in: 'b', out: 'ꦧ' }, { in: 'bu', out: 'ꦧꦸ' }, { in: 'buk', out: 'ꦧꦸꦏ' }, { in: 'buku', out: 'ꦧꦸꦏꦸ' }
-      ],
-      mobile: [
-        { in: 'ꦧ', out: 'ꦧ' }, { in: 'ꦧꦸ', out: 'ꦧꦸ' }, { in: 'ꦧꦸꦏ', out: 'ꦧꦸꦏ' }, { in: 'ꦧꦸꦏꦸ', out: 'ꦧꦸꦏꦸ' }
-      ]
-    },
-    {
-      name: "kopi",
-      phonetic: [
-        { in: 'k', out: 'ꦏ' }, { in: 'ko', out: 'ꦏꦺꦴ' }, { in: 'kop', out: 'ꦏꦺꦴꦥ꧀' }, { in: 'kopi', out: 'ꦏꦺꦴꦥꦶ' }
-      ],
-      windows: [
-        { in: 'k', out: 'ꦏ' }, { in: 'ko', out: 'ꦏꦺꦴ' }, { in: 'kop', out: 'ꦏꦺꦴꦥ' }, { in: 'kopi', out: 'ꦏꦺꦴꦥꦶ' }
-      ],
-      mobile: [
-        { in: 'ꦏ', out: 'ꦏ' }, { in: 'ꦏꦺꦴ', out: 'ꦏꦺꦴ' }, { in: 'ꦏꦺꦴꦥ', out: 'ꦏꦺꦴꦥ' }, { in: 'ꦏꦺꦴꦥꦶ', out: 'ꦺꦴꦥꦶ' }
-      ]
-    },
-    {
-      name: "segara",
-      phonetic: [
-        { in: 's', out: 'ꦱ' }, { in: 'se', out: 'ꦱꦺ' }, { in: 'seg', out: 'ꦱꦺꦒ꧀' }, { in: 'sega', out: 'ꦱꦺꦒ' }, { in: 'segar', out: 'ꦱꦺꦒꦂ' }, { in: 'segara', out: 'ꦱꦺꦒꦫ' }
-      ],
-      windows: [
-        { in: 's', out: 'ꦱ' }, { in: 'sE', out: 'ꦱꦺ' }, { in: 'sg', out: 'ꦱꦒ' }, { in: 'sgr', out: 'ꦱꦒꦫ' }
-      ],
-      mobile: [
-        { in: 'ꦱ', out: 'ꦱ' }, { in: 'ꦱꦺ', out: 'ꦱꦺ' }, { in: 'ꦱꦺꦒ', out: 'ꦱꦺꦒ' }, { in: 'ꦱꦺꦒꦫ', out: 'ꦱꦺꦒꦫ' }
-      ]
-    },
-    {
-      name: "dhahar",
-      phonetic: [
-        { in: 'd', out: 'ꦢ' }, { in: 'dh', out: 'ꦣ' }, { in: 'dha', out: 'ꦣ' }, { in: 'dhah', out: 'ꦣꦃ' }, { in: 'dhaha', out: 'ꦣꦲ' }, { in: 'dhahar', out: 'ꦣꦲꦂ' }
-      ],
-      windows: [
-        { in: 'D', out: 'ꦣ' }, { in: 'Dh', out: 'ꦣꦃ' }, { in: 'Dhr', out: 'ꦣꦂ' }
-      ],
-      mobile: [
-        { in: 'ꦣ', out: 'ꦣ' }, { in: 'ꦣꦲ', out: 'ꦣꦲ' }, { in: 'ꦣꦲꦂ', out: 'ꦣꦲꦂ' }
-      ]
-    }
-  ];
 
   let exampleIdx = $state(0);
   let stepIdx = 0;
@@ -210,13 +115,15 @@
 <main>
   <header>
     <div class="title-row">
-      <h1>ꦭꦺꦏ꧀ꦱꦶꦗꦮ</h1>
+      {#key currentLang}
+        <h3 in:fade={{ duration: 400 }}>{t.title}</h3>
+      {/key}
       {#key currentLang}
         <span class="scroll-notice" in:fade={{ duration: 400 }}>{t.scrollDownNotice} &darr;</span>
       {/key}
     </div>
+    <h1>ꦭꦺꦏ꧀ꦱꦶꦗꦮ</h1>
     {#key currentLang}
-      <h3 in:fade={{ duration: 400 }}>{t.title}</h3>
       <p class="subtitle" in:fade={{ duration: 400 }}>{t.subtitle}</p>
     {/key}
   </header>
@@ -650,25 +557,27 @@
     margin: 0; 
     line-height: 1.4;
     filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
-    padding: 1.5rem 0 1.2rem 0;
+    padding: 1rem 0 0.8rem 0;
     overflow: visible;
     font-family: 'Javanese Text', 'Noto Sans Javanese', serif;
   }
   
   h3 { 
-    font-size: clamp(0.8rem, 3vw, 1.1rem); 
+    font-size: clamp(1rem, 4vw, 1.4rem); 
     letter-spacing: 0.4em; 
     text-transform: uppercase; 
-    margin: -0.6rem 0 0 1.2rem; 
-    color: #8e7218;
-    opacity: 0.8;
+    margin: 0; 
+    color: #c5a028;
+    opacity: 0.9;
+    font-weight: 600;
   }
   
   header p.subtitle { 
     color: #6b6654; 
     font-style: italic; 
-    margin-top: 2rem; 
+    margin-top: 0.5rem; 
     font-size: clamp(0.8rem, 2.5vw, 0.95rem); 
+    margin-left: 0.2rem;
   }
 
   .converter {
