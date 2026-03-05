@@ -439,6 +439,7 @@
 
   .javanese-text, [translate="no"], .p-jav, .feature-icon, .step-jav, .sand-sect li span, .rekan-item span, .ex-header span, .alphabet-grid span {
     font-family: 'Javanese Text', 'Noto Sans Javanese', serif;
+    line-height: 2.2;
   }
 
   .navbar {    position: sticky;
@@ -555,7 +556,7 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     margin: 0; 
-    line-height: 1.4;
+    line-height: 1.8;
     filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
     padding: 1rem 0 0.8rem 0;
     overflow: visible;
@@ -659,7 +660,7 @@
   
   .javanese-text { 
     font-size: clamp(1.8rem, 8vw, 3.2rem); 
-    line-height: 1.5; 
+    line-height: 2.5; 
     background: linear-gradient(to bottom, #f1e5ac, #c5a028);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -779,7 +780,7 @@
   .demo-display .text { font-size: clamp(1rem, 4vw, 1.2rem); min-height: 1.5em; color: #d4ccb0; font-family: monospace; }
   .demo-output-row .text { 
     font-size: clamp(1.5rem, 6vw, 2.4rem); 
-    line-height: 2;
+    line-height: 2.5;
     background: linear-gradient(to bottom, #f1e5ac, #c5a028);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
