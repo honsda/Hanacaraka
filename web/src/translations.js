@@ -1,6 +1,6 @@
 export const translations = {
   en: {
-    title: "LexiJawa",
+    title: "sinau",
     subtitle: "Latin to Javanese Script Converter",
     latinLabel: "Latin",
     javaneseLabel: "Javanese",
@@ -14,7 +14,7 @@ export const translations = {
     switchMode: "Switch Mode"
   },
   id: {
-    title: "LexiJawa",
+    title: "sinau",
     subtitle: "Ubah tulisan Latin ke Aksara Jawa",
     latinLabel: "Latin",
     javaneseLabel: "Aksara Jawa",

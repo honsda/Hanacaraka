@@ -122,7 +122,7 @@
         <span class="scroll-notice" in:fade={{ duration: 400 }}>{t.scrollDownNotice} &darr;</span>
       {/key}
     </div>
-    <h1>ꦭꦺꦏ꧀ꦱꦶꦗꦮ</h1>
+    <h1>ꦱꦶꦤꦲꦸ</h1>
     {#key currentLang}
       <p class="subtitle" in:fade={{ duration: 400 }}>{t.subtitle}</p>
     {/key}
@@ -418,7 +418,7 @@
 </main>
 
 <footer>
-  ꦭꦺꦏ꧀ꦱꦶꦗꦮ &copy; 2026 LexiJawa
+  ꦱꦶꦤꦲꦸ &copy; 2026 sinau
 </footer>
 
 <style>
